@@ -13,9 +13,11 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowLooper
 import org.robolectric.shadows.httpclient.FakeHttp
 
 @Suppress("IllegalIdentifier")
@@ -68,6 +70,7 @@ class VolleyConversationsGatewayTest {
             val observer = gateway.findAll().test()
             ioScheduler.triggerActions()
             server.takeRequest()
+            observer.awaitTerminalEvent()
             observer.assertValues(*expectedConversations.toTypedArray())
             true
         }
