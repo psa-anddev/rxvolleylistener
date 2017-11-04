@@ -1,10 +1,8 @@
 package com.psa.rxvolleylistener.gateways
 
-import android.content.Context
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.Volley
 import com.psa.rxvolleylistener.RxVolleyListener
 import com.psa.rxvolleylistener.entities.Conversation
 import io.reactivex.Observable
