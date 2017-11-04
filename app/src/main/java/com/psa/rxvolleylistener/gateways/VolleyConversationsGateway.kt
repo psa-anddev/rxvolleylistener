@@ -2,6 +2,7 @@ package com.psa.rxvolleylistener.gateways
 
 import android.content.Context
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.psa.rxvolleylistener.RxVolleyListener
@@ -19,11 +20,9 @@ import org.json.JSONObject
  * @author Pablo Sánchez Alonso
  * @since 1.0
  */
-class VolleyConversationsGateway(context: Context,
+class VolleyConversationsGateway(private val queue: RequestQueue,
                                  private val baseUrl: String)
     : ConversationsGateway {
-
-    private val queue by lazy { Volley.newRequestQueue(context) }
 
     override fun findAll(): Observable<Conversation> {
 

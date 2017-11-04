@@ -1,5 +1,10 @@
 package com.psa.rxvolleylistener.gateways
 
+import com.android.volley.ImmediateResponseDelivery
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.BasicNetwork
+import com.android.volley.toolbox.HurlStack
+import com.android.volley.toolbox.NoCache
 import com.psa.rxvolleylistener.entities.Conversation
 import com.psa.rxvolleylistener.generators.ConversationsResponseGenerator
 import com.psa.rxvolleylistener.sample.BuildConfig
@@ -13,17 +18,14 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-import org.robolectric.shadows.ShadowLooper
 import org.robolectric.shadows.httpclient.FakeHttp
 
 @Suppress("IllegalIdentifier")
 @RunWith(RobolectricTestRunner::class)
 @Config(constants = BuildConfig::class,
-        sdk = intArrayOf(22))
+        sdk = intArrayOf(26))
 class VolleyConversationsGatewayTest {
     companion object {
         @JvmField val server = MockWebServer()
@@ -42,13 +44,19 @@ class VolleyConversationsGatewayTest {
         }
     }
 
+    private val queue  = RequestQueue(NoCache(),
+            BasicNetwork(HurlStack()),
+            4,
+            ImmediateResponseDelivery())
+
     private val gateway : ConversationsGateway =
-            VolleyConversationsGateway(RuntimeEnvironment.application,
+            VolleyConversationsGateway(queue,
                     server.url("/").toString())
 
     @Before
     fun setUp() {
         FakeHttp.getFakeHttpLayer().interceptHttpRequests(false)
+        queue.start()
     }
 
     @Test
